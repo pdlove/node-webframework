@@ -1,0 +1,7 @@
+{
+    "name": "uiTable",
+    "description": "Sortable data-driven table",
+    "css": ["uiTable.css"],
+    "html": null,
+    "js": ["uiTable.js"]
+}

@@ -1,0 +1,8 @@
+{
+    "name": "uiMenu",
+    "controls": null,
+    "css": ["uiMenu.css"],
+    "html": null,
+    "js": ["uiMenu.js"],
+    "startup": "init_vmlist"
+}
