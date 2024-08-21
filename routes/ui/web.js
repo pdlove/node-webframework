@@ -4,26 +4,13 @@ const router = express.Router();
 //Used for Control loading
 const path = require('path');
 const fs = require('fs');
+const { dirname } = require('path');
+const appDir = dirname(require.main.filename);
 
 //Used to minify content
 const CleanCSS = require('clean-css');
 const UglifyJS = require("uglify-js");
 const htmlMinify = require("html-minifier");
-
-// Get a MenuItem by ID
-router.get('/control/:id', async (req, res) => {
-  try {
-    const thisOne = listControls[req.params.id]
-    if (thisOne) {
-      res.status(200).json(thisOne);
-    } else {
-      res.status(404).json({ error: 'Control not found' });
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
 
 function loadClientCodeList(dir, minify, startPath) {
   let myList = {};
@@ -94,8 +81,23 @@ function loadClientCodeList(dir, minify, startPath) {
   return myList;
 }
 
-var listControls = loadClientCodeList(path.join(__dirname, '../client_controls'), false);
-var listComponents = loadClientCodeList(path.join(__dirname, '../client_components'), false);
-var listPages = loadClientCodeList(path.join(__dirname, '../client_pages'), false);
+var listControls = loadClientCodeList(path.join(appDir, 'client_controls'), false);
+//var listComponents = loadClientCodeList(path.join(appDir, 'client_components'), false);
+var listPages = loadClientCodeList(path.join(appDir, 'client_pages'), false);
+
+
+// Get a MenuItem by ID
+router.get('/control/:id', async (req, res) => {
+  try {
+    const thisOne = listControls[req.params.id]
+    if (thisOne) {
+      res.status(200).json(thisOne);
+    } else {
+      res.status(404).json({ error: 'Control not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 module.exports = router;

@@ -75,46 +75,48 @@
 
     <script>
 
+async function loadControl(controlName, destTag) {
+    const url = `${window.location.protocol}//${window.location.host}/api/ui/web/control/${controlName}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
 
+        const json = await response.json();
+        console.log(json);
+        if (json.cssCode) {
+            let cssArea = document.getElementById(`css_${controlName}`);
+            if (!cssArea) {
+                //Create new tag
+            } else {
+                if (cssArea.innerHTML!==json.cssCode) {
+                    alert("CSS different for this control.");
+                }
+            }
+        }
+        if (json.jsCode) {
+            let jsArea = document.getElementById(`js_${controlName}`);
+            if (!jsArea) {
+                //Create new tag
+            } else {
+                if (jsArea.innerHTML!==json.jsCode) {
+                    alert("JS different for this control.");
+                }
+            }
+        }
+        let jsArea = document.getElementById(`js_${controlName}`);
+        
+        //htmlCode
+        //name
+        //startFunction
+    } catch (error) {
+        console.error(error.message);
+    }
+}
 
-        var myMenu = null;
-        document.addEventListener("DOMContentLoaded", function (e) {
-            loadControl("uiMenu", document.getElementById('sideMenu'));
-
-
-            var menuData = [
-                { "menuID": 1, "parentID": 0, "displayType": "root", "iconClass": "nc-icon nc-bank", "displayText": "Dashboard", "PageSource": "dashboard" },
-                { "menuID": 2, "parentID": 0, "displayType": "root", "iconClass": "nc-icon nc-book-bookmark", "displayText": "Pages" },
-                { "menuID": 4, "parentID": 2, "displayType": "item", "iconText": "T", "displayText": "Timeline", "page": "devices", "params": "switches" },
-                { "menuID": 24, "parentID": 2, "displayType": "item", "iconText": "L", "displayText": "Login", "page": "devices", "params": "switches" },
-                { "menuID": 34, "parentID": 2, "displayType": "item", "iconText": "R", "displayText": "Register", "page": "devices", "params": "switches" },
-                { "menuID": 44, "parentID": 2, "displayType": "item", "iconText": "LS", "displayText": "Lock Screen", "page": "devices", "params": "switches" },
-                { "menuID": 54, "parentID": 2, "displayType": "item", "iconText": "UP", "displayText": "User Profile", "page": "devices", "params": "switches" },
-                { "menuID": 5, "parentID": 0, "displayType": "root", "iconClass": "nc-icon nc-layout-11", "displayText": "Components" },
-                { "menuID": 15, "parentID": 5, "displayType": "section", "displayText": "Inventory" },
-                { "menuID": 16, "parentID": 5, "displayType": "section", "displayText": "Services" },
-                { "menuID": 6, "parentID": 15, "displayType": "item", "iconClass": "nc-icon nc-globe", "displayText": "Organization", "page": "config_org" },
-                { "menuID": 7, "parentID": 15, "displayType": "item", "iconClass": "nc-icon nc-pin-3", "displayText": "Locations", "page": "config_locations" },
-                { "menuID": 8, "parentID": 15, "displayType": "item", "iconClass": "nc-icon nc-box-2", "displayText": "VLANs", "page": "config_vlans" },
-                { "menuID": 9, "parentID": 15, "displayType": "item", "iconClass": "nc-icon nc-vector", "displayText": "Networks", "page": "config_nets" },
-                { "menuID": 11, "parentID": 16, "displayType": "item", "iconText": "R", "displayText": "Radius Server", "page": "config_radius" },
-                { "menuID": 12, "parentID": 16, "displayType": "item", "iconText": "IP", "displayText": "DHCP Integration", "page": "config_dhcp" },
-                { "menuID": 13, "parentID": 16, "displayType": "item", "iconText": "D", "displayText": "DNS Integration", "page": "config_dns" }
-            ];
-
-
-            myMenu = new uiMenu();
-            myMenu.loadData(menuData);
-            var menuHTML = myMenu.renderHTML();
-            myMenu.setSelectedItem(24);
-            document.getElementById("sideMenu").appendChild(menuHTML);
-            var allCollapsables = document.getElementsByClassName("collapsable");
-            allCollapsables[0].addEventListener("click", function (e) {
-                this.classList.toggle("collapsed");
-            });
-
-        });
-    </script>
+loadControl("uiMenu", document.getElementById('sideMenu'));
+   </script>
 </body>
 
 </html>
