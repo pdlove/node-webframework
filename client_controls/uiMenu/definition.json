@@ -4,5 +4,6 @@
     "css": ["uiMenu.css"],
     "html": null,
     "js": ["uiMenu.js"],
-    "startup": "init_vmlist"
+    "isClass": true,
+    "startupFunction": null
 }

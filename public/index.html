@@ -8,7 +8,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
     <link href="css/uiBase.css" rel="stylesheet" />
-    <link href="css/uiIcons.css" rel="stylesheet" />    
+    <link href="css/uiIcons.css" rel="stylesheet" />        
 </head>
 
 <body>
@@ -75,45 +75,6 @@
 
     <script>
 
-async function loadControl(controlName, destTag) {
-    const url = `${window.location.protocol}//${window.location.host}/api/ui/web/control/${controlName}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-        }
-
-        const json = await response.json();
-        console.log(json);
-        if (json.cssCode) {
-            let cssArea = document.getElementById(`css_${controlName}`);
-            if (!cssArea) {
-                //Create new tag
-            } else {
-                if (cssArea.innerHTML!==json.cssCode) {
-                    alert("CSS different for this control.");
-                }
-            }
-        }
-        if (json.jsCode) {
-            let jsArea = document.getElementById(`js_${controlName}`);
-            if (!jsArea) {
-                //Create new tag
-            } else {
-                if (jsArea.innerHTML!==json.jsCode) {
-                    alert("JS different for this control.");
-                }
-            }
-        }
-        let jsArea = document.getElementById(`js_${controlName}`);
-        
-        //htmlCode
-        //name
-        //startFunction
-    } catch (error) {
-        console.error(error.message);
-    }
-}
 
 loadControl("uiMenu", document.getElementById('sideMenu'));
    </script>

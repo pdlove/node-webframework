@@ -37,11 +37,14 @@ class uiMenu {
         }
         return;
     }
-    renderHTML() {
+    renderHTML(destTag) {
         let rootMenu = document.createElement("ul");
         rootMenu.classList.add("nav");
         for (var idx in this.#treeData)
 				rootMenu.appendChild(this.#treeData[idx].renderItem());
+        if (destTag) {
+            destTag.appendChild(rootMenu);
+        }
 		return rootMenu;		
     }
     setSelectedItem(id) {
