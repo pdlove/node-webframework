@@ -1,73 +1,161 @@
-document.getElementById('productForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-        const response = await fetch('/api/pos/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-            alert('Product created successfully!');
-            this.reset();
-        } else {
-            const errorData = await response.json();
-            alert('Error: ' + errorData.error);
-        }
-    } catch (error) {
-        alert('Error: ' + error.message);
-    }
-});
-
-
 document.addEventListener('DOMContentLoaded', async function() {
-    const categorySelect = document.getElementById('category');
+    const productTableBody = document.querySelector('#productTable tbody');
+    const productModal = document.getElementById('productModal');
+    const closeModal = document.querySelector('.close');
 
-    try {
-        const response = await fetch('/api/pos/categories');
-        const categories = await response.json();
-        
-        if (response.ok) {
+    closeModal.addEventListener('click', () => {
+        productModal.style.display = 'none';
+    });
+
+    window.onclick = function(event) {
+        if (event.target == productModal) {
+            productModal.style.display = 'none';
+        }
+    };
+
+    async function fetchCategoriesAndProducts() {
+        try {
+            const [categoriesResponse, productsResponse] = await Promise.all([
+                fetch('/api/ui/categories'),
+                fetch('/api/pos/products')
+            ]);
+            const categories = await categoriesResponse.json();
+            const products = await productsResponse.json();
+
             const categoryTree = buildCategoryTree(categories);
-            populateCategoryDropdown(categorySelect, categoryTree);
-        } else {
-            alert('Failed to load categories');
+            renderCategoryTree(productTableBody, categoryTree, products);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-    } catch (error) {
-        console.error('Error loading categories:', error);
-        alert('Error loading categories');
     }
-});
 
-function buildCategoryTree(categories, parentCategoryID = null) {
-    const categoryTree = [];
-    categories.forEach(category => {
-        if (category.parent_categoryID === parentCategoryID) {
-            const children = buildCategoryTree(categories, category.categoryID);
-            if (children.length) {
-                category.children = children;
+    function buildCategoryTree(categories, parentCategoryID = null) {
+        const categoryTree = [];
+        categories.forEach(category => {
+            if (category.parent_categoryID === parentCategoryID) {
+                const children = buildCategoryTree(categories, category.categoryID);
+                if (children.length) {
+                    category.children = children;
+                }
+                categoryTree.push(category);
             }
-            categoryTree.push(category);
+        });
+        return categoryTree;
+    }
+
+    function renderCategoryTree(tbody, categoryTree, products, level = 0) {
+        categoryTree.forEach(category => {
+            const categoryRow = document.createElement('tr');
+            categoryRow.classList.add('category-row');
+            categoryRow.dataset.categoryId = category.categoryID;
+
+            const categoryNameCell = document.createElement('td');
+            categoryNameCell.textContent = '—'.repeat(level) + ' ' + category.name;
+
+            const categoryActionCell = document.createElement('td');
+            const newProductLink = document.createElement('span');
+            newProductLink.classList.add('new-product');
+            newProductLink.textContent = 'New Product';
+            newProductLink.addEventListener('click', () => openProductModal(category.categoryID));
+
+            categoryActionCell.appendChild(newProductLink);
+            categoryRow.appendChild(categoryNameCell);
+            categoryRow.appendChild(categoryActionCell);
+            tbody.appendChild(categoryRow);
+
+            const categoryProducts = products.filter(product => product.categoryID === category.categoryID);
+            categoryProducts.forEach(product => renderProductRow(tbody, product, level + 1));
+
+            if (category.children) {
+                renderCategoryTree(tbody, category.children, products, level + 1);
+            }
+        });
+    }
+
+    function renderProductRow(tbody, product, level) {
+        const productRow = document.createElement('tr');
+        productRow.classList.add('product-row');
+
+        const productNameCell = document.createElement('td');
+        productNameCell.textContent = '—'.repeat(level) + ' ' + product.name;
+
+        const productActionCell = document.createElement('td');
+        const editIcon = document.createElement('span');
+        editIcon.classList.add('edit-icon');
+        editIcon.textContent = '✏️';
+        editIcon.addEventListener('click', () => openProductModal(product.categoryID, product));
+
+        productActionCell.appendChild(editIcon);
+        productRow.appendChild(productNameCell);
+        productRow.appendChild(productActionCell);
+        tbody.appendChild(productRow);
+    }
+
+    function openProductModal(categoryID, product = null) {
+        const modalTitle = document.getElementById('modalTitle');
+        const productForm = document.getElementById('productForm');
+
+        if (product) {
+            modalTitle.textContent = 'Edit Product';
+            productForm.productID.value = product.productID;
+            productForm.name.value = product.name;
+            productForm.size.value = product.size;
+            productForm.modifier.value = product.modifier;
+            productForm.basePrice.value = product.BasePrice;
+            productForm.lastCost.value = product.LastCost;
+        } else {
+            modalTitle.textContent = 'Add New Product';
+            productForm.reset();
+        }
+
+        productForm.categoryID.value = categoryID;
+        productModal.style.display = 'block';
+    }
+
+    productForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(productForm);
+        const productID = formData.get('productID');
+        const categoryID = formData.get('categoryID');
+
+        const productData = {
+            name: formData.get('name'),
+            size: formData.get('size'),
+            modifier: formData.get('modifier'),
+            BasePrice: formData.get('BasePrice'),
+            LastCost: formData.get('LastCost'),
+            categoryID: categoryID,
+        };
+
+        try {
+            let response;
+            if (productID) {
+                response = await fetch(`/api/pos/products/${productID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+            } else {
+                response = await fetch('/api/pos/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+            }
+
+            if (response.ok) {
+                alert('Product saved successfully');
+                productModal.style.display = 'none';
+                fetchCategoriesAndProducts();
+            } else {
+                alert('Failed to save product');
+            }
+        } catch (error) {
+            console.error('Error saving product:', error);
+            alert('Error saving product');
         }
     });
-    return categoryTree;
-}
 
-function populateCategoryDropdown(selectElement, categoryTree, level = 0) {
-    categoryTree.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.categoryID;
-        option.text = '—'.repeat(level) + ' ' + category.name;
-        selectElement.appendChild(option);
-
-        if (category.children) {
-            populateCategoryDropdown(selectElement, category.children, level + 1);
-        }
-    });
-}
+    fetchCategoriesAndProducts();
+});

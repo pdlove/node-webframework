@@ -3,5 +3,8 @@
     "description": "Sortable data-driven table",
     "css": ["uiTable.css"],
     "html": null,
-    "js": ["uiTable.js"]
+    "js": ["uiTable.js"],
+    "controls": null,
+    "isClass": true,
+    "startupFunction": null
 }

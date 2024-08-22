@@ -39,9 +39,7 @@ function loadClientCodeList(dir, minify, startPath) {
           let content = fs.readFileSync(path.join(dir, defFile.css[idx]), 'utf8');
           cssCode += '\n' + content;
         }
-        if (minify) {
-          cssCode = new CleanCSS().minify(cssCode);
-        }
+        cssCodeMinified = new CleanCSS().minify(cssCode);
         definition.cssCode = cssCode;
       }
       if (defFile.html) {
@@ -52,15 +50,14 @@ function loadClientCodeList(dir, minify, startPath) {
           let content = fs.readFileSync(path.join(dir, defFile.html[idx]), 'utf8');
           htmlCode += '\n' + content;
         }
-        if (minify) {
-          htmlCode = htmlMinify.minify(htmlCode, {
+        htmlCodeMinified = htmlMinify.minify(htmlCode, {
             removeAttributeQuotes: true,
             collapseWhitespace: true,
             removeComments: true,
             minifyCSS: true,
             minifyJS: true
           });
-        }
+        
         definition.htmlCode = htmlCode;
       }
       if (defFile.js) {
@@ -69,9 +66,7 @@ function loadClientCodeList(dir, minify, startPath) {
           let content = fs.readFileSync(path.join(dir, defFile.js[idx]), 'utf8');
           jsCode += '\n' + content;
         }
-        if (minify) {
-          jsCode = UglifyJS.minify(jsCode);
-        }
+        jsCodeMinified = UglifyJS.minify(jsCode);
         definition.jsCode = jsCode;
       }
       myList[defName] = definition;
@@ -92,6 +87,33 @@ router.get('/control/:id', async (req, res) => {
     const thisOne = listControls[req.params.id]
     if (thisOne) {
       res.status(200).json(thisOne);
+    } else {
+      res.status(404).json({ error: 'Control not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get('/control/:id/:fname', async (req, res) => {
+  try {
+    const thisOne = listControls[req.params.id]
+    if (thisOne) {
+      if (req.params.fname.endsWith('.min.js')) {
+        res.type("application/javascript");
+        res.send(thisOne.jsCodeMinified);
+      } else if (req.params.fname.endsWith('.js')) {
+        res.type("application/javascript");
+        res.send(thisOne.jsCode);
+      } else if (req.params.fname.endsWith('.min.css')) {
+        res.type("text/css");
+        res.send(thisOne.cssCodeMinified);
+      } else if (req.params.fname.endsWith('.css')) {
+        res.type("text/css");
+        res.send(thisOne.cssCode);
+      } else {
+        res.status(400).json({ error: "Unknown Extension" });    
+      }
     } else {
       res.status(404).json({ error: 'Control not found' });
     }

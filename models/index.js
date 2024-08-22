@@ -9,6 +9,7 @@ db.sequelize = sequelize;
 db.Groups = require('./system/group')(sequelize, Sequelize.DataTypes);
 db.Menus = require('./system/menu')(sequelize, Sequelize.DataTypes);
 db.Users = require('./system/user')(sequelize, Sequelize.DataTypes);
+db.Categories = require('./system/category')(sequelize, Sequelize.DataTypes);
 
 db.Groups.belongsTo(db.Users, { as: 'AddedByUser', foreignKey: 'added_by_user_id' });
 db.Groups.belongsToMany(db.Users, { through: 'UserGroups' });
@@ -17,7 +18,7 @@ db.Menus.hasMany(db.Menus, { as: "Submenus", foreignKey: "parent_menu_id" });
 db.Menus.belongsTo(db.Menus, { as: "ParentMenu", foreignKey: "parent_menu_id" });
 
 
-db.Categories = require('./pos/category')(sequelize, Sequelize.DataTypes);
+
 db.Products = require('./pos/product')(sequelize, Sequelize.DataTypes);
 
 db.Categories.hasMany(db.Categories, { as: "Subcategories", foreignKey: "parent_categoryID" });

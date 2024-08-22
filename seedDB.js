@@ -26,16 +26,16 @@ async function SeedDatabase(queryInterface) {
     ]);
 
     await queryInterface.bulkInsert("Categories", [
-      { "categoryID": 1, "parent_categoryID": null, "tabletype": "Products", "name": "Apparel", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 2, "parent_categoryID": 1, "tabletype": "Products", "name": "Bags", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 3, "parent_categoryID": 1, "tabletype": "Products", "name": "Shirts", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 4, "parent_categoryID": 3, "tabletype": "Products", "name": "Plain Tee", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 5, "parent_categoryID": null, "tabletype": "Products", "name": "Drinkware", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 6, "parent_categoryID": 5, "tabletype": "Products", "name": "Tumblers", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 7, "parent_categoryID": 6, "tabletype": "Products", "name": "Plain", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 8, "parent_categoryID": 6, "tabletype": "Products", "name": "Glitter", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 9, "parent_categoryID": 6, "tabletype": "Products", "name": "Glow In The Dark", createdAt: new Date(), updatedAt: new Date() },
-      { "categoryID": 10, "parent_categoryID": 5, "tabletype": "Products", "name": "Shot Glasses", createdAt: new Date(), updatedAt: new Date() }      
+      { "categoryID": 1, "parent_categoryID": null, "tabletype": "products", "name": "Apparel", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 2, "parent_categoryID": 1, "tabletype": "products", "name": "Bags", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 3, "parent_categoryID": 1, "tabletype": "products", "name": "Shirts", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 4, "parent_categoryID": 3, "tabletype": "products", "name": "Plain Tee", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 5, "parent_categoryID": null, "tabletype": "products", "name": "Drinkware", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 6, "parent_categoryID": 5, "tabletype": "products", "name": "Tumblers", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 7, "parent_categoryID": 6, "tabletype": "products", "name": "Plain", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 8, "parent_categoryID": 6, "tabletype": "products", "name": "Glitter", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 9, "parent_categoryID": 6, "tabletype": "products", "name": "Glow In The Dark", createdAt: new Date(), updatedAt: new Date() },
+      { "categoryID": 10, "parent_categoryID": 5, "tabletype": "products", "name": "Shot Glasses", createdAt: new Date(), updatedAt: new Date() }      
     ]);
   }
 //'$2b$10$DUG9tWmdx/zVzw3gqGE0TOyrXlmT9aAMhz2EX84syUloNnfJ9fI5a'

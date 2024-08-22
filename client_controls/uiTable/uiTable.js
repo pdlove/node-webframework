@@ -20,6 +20,17 @@ class uiTable {
     constructor(options) {
     
     }
+
+    async setParameters(parameters) {
+        if (!parameters) return;
+        if (parameters.tableRows)
+            this.setData(parameters.tableRows);
+    }
+    async renderDOM(destDOM) {
+        destDOM.innerHTML='';
+        this.renderHTML(destDOM);
+    }
+
     addColumn(options, position) {
         if (options instanceof String || typeof options === "string") {
             //Only the name is passed
@@ -43,6 +54,12 @@ class uiTable {
     }
 
     renderHTML(div) {
+        //If there aren't any columns defined, get them from the datasource.
+        if (Object.keys(this.allColumns).length==0) {
+            for (let test in this.tableRows[0])
+                this.addColumn(test);
+        }
+
         //If There aren't any display columns dump all of them into the display.
         if (this.displayColumns.length===0)            
             for (var fieldname in this.allColumns)
@@ -243,7 +260,8 @@ class uiTableColumn {
                 return '<input type="checkbox">';
         } else {
             //new Intl.NumberFormat("en-US", this.#formatOptions).format(1234567891.234567891);
-            return value.toString();
+            if (value) return value.toString();
+			return "";
         }
     }
 }

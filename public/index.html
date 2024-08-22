@@ -65,7 +65,7 @@
     </header-line>
     <main-content>
         <!-- Main content here -->
-        <div>
+        <div id="content">
 
         </div>
         <ui-card class="full-size">This is the main content area.</ui-card>
@@ -78,6 +78,10 @@
         async function InitializeScreen() {
             let menuData = await loadAPIData('ui/menu/');
             loadControl("uiMenu", document.getElementById('sideMenu'),{menuData});
+            
+            let categoryData = await loadAPIData('pos/products');
+            loadControl("uiTable", document.getElementsByTagName("main-content")[0],{ tableRows:categoryData });
+            
         }
         InitializeScreen();
         

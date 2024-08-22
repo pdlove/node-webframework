@@ -26,6 +26,7 @@ class uiMenu {
         }
         this.#parseTreeFromFlat();
     }
+
     #parseTreeFromFlat() {
         this.#treeData=[];
         for (let idx in this.#flatData) {        

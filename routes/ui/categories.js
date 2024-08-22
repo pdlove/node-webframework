@@ -16,11 +16,23 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const category = await db.Categories.findByPk(req.params.id);
-  if (category) {
-    res.json(category);
+  if (isNaN(req.params.id)) {
+    //The ID is a string. This is assumed to be to category group we're looking for.
+    const category = await db.Categories.findAll({where: { tabletype: req.params.id}});
+    if (category) {
+      res.json(category);
+    } else {
+      res.status(404).json({ error: 'Category not found' });
+    }
+
   } else {
-    res.status(404).json({ error: 'Category not found' });
+    //the ID is a number
+    const category = await db.Categories.findByPk(req.params.id);
+    if (category) {
+      res.json(category);
+    } else {
+      res.status(404).json({ error: 'Category not found' });
+    }
   }
 });
 

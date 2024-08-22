@@ -20,6 +20,11 @@ class uiMenuItem {
 
     constructor(inData) {
         if (inData) {
+            if (inData.menuID) {
+                this.menuID=`M${inData.menuID}`;
+            } else {
+                this.menuID = `C${inData.categoryID}`;
+            }
             this.menuID=inData.menuID;
             this.parent_menu_id = (inData.parent_menu_id||0);
             this.iconClass = (inData.iconClass||'');

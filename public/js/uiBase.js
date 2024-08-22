@@ -1,5 +1,10 @@
 var controlSource = {};
 const apiBase = location.protocol + '//' + location.host+'/api/';
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function loadControlSource(controlName) {
 
 }
@@ -38,8 +43,10 @@ async function loadControl(controlName, destTag, parameters) {
         }
 
         const json = await response.json();
+
+        let cssArea = null;
         if (json.cssCode) {
-            let cssArea = document.getElementById(`css_${controlName}`);
+            cssArea = document.getElementById(`css_${controlName}`);
             if (!cssArea) {
                 //Create new tag
                 cssArea = document.createElement("style");
@@ -52,13 +59,29 @@ async function loadControl(controlName, destTag, parameters) {
                 }
             }
         }
+
+        let jsArea = null;
         if (json.jsCode) {
-            let jsArea = document.getElementById(`js_${controlName}`);
+            jsArea = document.getElementById(`js_${controlName}`);
             if (!jsArea) {
                 //Create new tag
                 jsArea = document.createElement("script");
                 jsArea.id=`js_${controlName}`;
-                jsArea.innerHTML=json.jsCode;
+                jsArea.status = "not loaded";
+                // Add event listener for when the script is loaded
+                jsArea.onload = () => {
+                    console.log(`Script loaded: ${url}`);
+                    jsArea.status = "loaded";
+                };
+
+                // Add event listener for error handling
+                jsArea.onerror = () => {
+                    console.error(`Error loading script: ${url}`);
+                    jsArea.status = "error";
+                };
+
+                jsArea.src = `${url}/${controlName}.js`;
+                //jsArea.innerHTML=json.jsCode;
                 document.getElementsByTagName("head")[0].appendChild(jsArea);                
             } else {
                 if (jsArea.innerHTML!==json.jsCode) {
@@ -72,6 +95,12 @@ async function loadControl(controlName, destTag, parameters) {
         } else {
             destTag.innerHTML='';
         }
+
+        if (jsArea) {
+            while (jsArea.status=="not loaded") {
+                await sleep(10);
+            }
+        }        
 
         const newControl = eval(`new ${controlName}()`);
         newControl.setParameters(parameters);
