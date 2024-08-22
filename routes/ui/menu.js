@@ -5,27 +5,28 @@ const db = require('../../models');
 // Create a MenuItem
 router.post('/', async (req, res) => {
   try {
-    const menuItem = await db.MenuItem.create(req.body);
+    const menuItem = await db.Menus.create(req.body);
     res.status(201).json(menuItem);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// Get all MenuItem
+// Get all menu items
 router.get('/', async (req, res) => {
   try {
-    const menuItems = await db.MenuItem.findAll();
-    res.status(200).json(menuItems);
+      const menus = await db.Menus.findAll();
+      res.json(menus);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
   }
 });
+
 
 // Get a MenuItem by ID
 router.get('/:id', async (req, res) => {
   try {
-    const menuItem = await db.MenuItem.findByPk(req.params.id);
+    const menuItem = await db.Menus.findByPk(req.params.id);
     if (menuItem) {
       res.status(200).json(menuItem);
     } else {

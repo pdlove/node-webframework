@@ -1,60 +1,25 @@
-a.collapsed + ul {
+
+/* Basic styling */
+nav-menu ul {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+
+/* Hide submenu if the a record is collapsed */
+nav-menu a.collapsed + ul {
     display: none !important;
 }
 
-.subnav {
-    margin-top: 0 !important;
-    background-color: rgba(255,255,255,0.05);
-}
-.subnav>li>a {
-    margin-top: 7px !important;
-    padding: 5px 8px !important;
-}
-.nav li.active>a, .nav li.active>a i {
+
+/* Menu item Formatting */
+nav-menu li.active>a, nav-menu li.active>a>i, nav-menu li.active>a>span {
     color: #ef8157 !important;
     opacity: 1 !important;
 }
-.collapsable {
-    cursor: pointer;
-}
 
-.caret {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: 2px;
-    vertical-align: middle;
-    border-top: none;
-    border-bottom: 4px dashed;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-}
-
-.nav .caret {
-    top: 14px;
-    position: absolute;
-    right: 10px;
-}
-
-.collapsed .caret {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: 2px;
-    vertical-align: middle;
-    border-top: 4px dashed;
-    border-bottom: none;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-}
-
-
-.sidebar .nav {
-    margin-top: 20px;
-    display: block;
-}
-
-.sidebar .nav li>a {
+nav-menu li>a {
     margin: 10px 15px 0;
     color: #FFFFFF;
     display: block;
@@ -68,19 +33,7 @@ a.collapsed + ul {
     opacity: .7;
 }
 
-.nav .sidebar-normal {
-    margin: 0;
-    position: relative;
-    transform: translateX(0px);
-    opacity: 1;
-    white-space: nowrap;
-    display: block;
-    line-height: 20px;
-    z-index: 1;
-    text-transform: capitalize;
-}
-
-.nav .sidebar-mini-icon {
+nav-menu .text-icon {
     text-transform: uppercase;
     width: 34px;
     margin-right: 10px;
@@ -95,12 +48,8 @@ a.collapsed + ul {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.nav.subnav i {
-    font-size: 18px;
-}
-
-.nav i {
-    font-size: 24px;
+nav-menu i {
+    font-size: 24px !important;
     float: left;
     margin-right: 12px;
     line-height: 30px;
@@ -110,7 +59,7 @@ a.collapsed + ul {
     position: relative;
 }
 
-.nav p {
+nav-menu p {
     margin: 0;
     line-height: 30px;
     position: relative;
@@ -120,8 +69,58 @@ a.collapsed + ul {
     font-weight: 600;
 }
 
+.caret {
+    display: inline-block;
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: none;
+    border-bottom: 4px dashed;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
 
-.activetick>a:before, .activetick>a:after {
+.collapsed .caret { /* This is upside down from the normal Caret */
+    border-top: 4px dashed;
+    border-bottom: none;
+    
+}
+
+
+
+
+/* Sub Menus have a few tweaks */
+nav-menu .sub {
+    margin-top: 0 !important;
+    background-color: rgba(255,255,255,0.05);
+}
+
+nav-menu .sub i {
+    font-size: 18px !important;
+}
+
+nav-menu .sub>li>a {
+    margin-top: 7px !important;
+    padding: 5px 8px !important;
+}
+
+nav-menu .normal {
+    margin: 0;
+    position: relative;
+    transform: translateX(0px);
+    opacity: 1;
+    white-space: nowrap;
+    display: block;
+    line-height: 20px;
+    z-index: 1;
+    text-transform: capitalize;
+}
+
+nav-menu .activetick>a:before, nav-menu .activetick>a:after {
     border-right: 17px solid #ddd;
     border-top: 17px solid transparent;
     border-bottom: 17px solid transparent;

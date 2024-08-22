@@ -13,6 +13,22 @@ function loadPanel(panelName, dstContainer, parameters) {
 
 }
 
+async function loadAPIData(endpoint) {
+    const url = `${window.location.protocol}//${window.location.host}/api/${endpoint}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json);
+        return json;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 async function loadControl(controlName, destTag, parameters) {
     const url = `${window.location.protocol}//${window.location.host}/api/ui/web/control/${controlName}`;
     try {
@@ -22,7 +38,6 @@ async function loadControl(controlName, destTag, parameters) {
         }
 
         const json = await response.json();
-        console.log(json);
         if (json.cssCode) {
             let cssArea = document.getElementById(`css_${controlName}`);
             if (!cssArea) {
@@ -57,12 +72,11 @@ async function loadControl(controlName, destTag, parameters) {
         } else {
             destTag.innerHTML='';
         }
-        if (json.startFunction) {
-            eval(json.startFunction);
-        }
-        //htmlCode
-        //name
-        //startFunction
+
+        const newControl = eval(`new ${controlName}()`);
+        newControl.setParameters(parameters);
+        newControl.renderDOM(destTag);
+        return newControl
     } catch (error) {
         console.error(error.message);
     }

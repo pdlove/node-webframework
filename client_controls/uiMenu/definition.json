@@ -3,7 +3,7 @@
     "controls": null,
     "css": ["uiMenu.css"],
     "html": null,
-    "js": ["uiMenu.js"],
+    "js": ["uiMenu.js","uiMenuItem.js"],
     "isClass": true,
     "startupFunction": null
 }

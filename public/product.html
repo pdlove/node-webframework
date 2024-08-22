@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Product</title>
+    <link rel="stylesheet" href="product.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Create Product</h2>
+        <form id="productForm">
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="size">Size</label>
+                <input type="text" id="size" name="size" required>
+            </div>
+            <div class="form-group">
+                <label for="modifier">Modifier</label>
+                <input type="text" id="modifier" name="modifier">
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="categoryID" required>
+                    <option value="">Select a category</option>
+                    <!-- Dynamic category options go here -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="basePrice">Base Price</label>
+                <input type="number" step="0.01" id="basePrice" name="BasePrice" required>
+            </div>
+            <div class="form-group">
+                <label for="lastCost">Last Cost</label>
+                <input type="number" step="0.01" id="lastCost" name="LastCost" required>
+            </div>
+            <div class="form-group">
+                <label for="qtyBlank">Quantity Blank</label>
+                <input type="number" id="qtyBlank" name="QtyBlank" required>
+            </div>
+            <div class="form-group">
+                <label for="qtyMade">Quantity Made</label>
+                <input type="number" id="qtyMade" name="QtyMade" required>
+            </div>
+            <div class="form-group">
+                <label for="qtyScrap">Quantity Scrap</label>
+                <input type="number" id="qtyScrap" name="QtyScrap" required>
+            </div>
+            <div class="form-group">
+                <label for="qtySoldRecently">Quantity Sold Recently</label>
+                <input type="number" id="qtySoldRecently" name="QtySoldRecently" required>
+            </div>
+            <button type="submit">Create Product</button>
+        </form>
+    </div>
+    <script src="product.js"></script>
+</body>
+</html>

@@ -5,7 +5,18 @@ class uiMenu {
     constructor(menuData) {
         if (menuData)
             this.loadData(menuData);
+    };
+
+    async setParameters(parameters) {
+        if (!parameters) return;
+        if (parameters.menuData)
+            this.loadData(parameters.menuData);
     }
+    async renderDOM(destDOM) {
+        destDOM.innerHTML='';
+        this.renderHTML(destDOM);
+    }
+
     loadData(menuData) {
         this.#flatData={};
         for (var idx in menuData) {
@@ -19,7 +30,7 @@ class uiMenu {
         this.#treeData=[];
         for (let idx in this.#flatData) {        
             var menuItem = this.#flatData[idx]; //Get the item
-            var parentItem = this.#flatData[menuItem.parentID]; //Get the parent
+            var parentItem = this.#flatData[menuItem.parent_menu_id]; //Get the parent
             if (!menuItem.children) {
                 menuItem.children=[];
             }
@@ -39,7 +50,6 @@ class uiMenu {
     }
     renderHTML(destTag) {
         let rootMenu = document.createElement("ul");
-        rootMenu.classList.add("nav");
         for (var idx in this.#treeData)
 				rootMenu.appendChild(this.#treeData[idx].renderItem());
         if (destTag) {

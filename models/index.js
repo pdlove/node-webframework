@@ -15,7 +15,17 @@ db.Groups.belongsToMany(db.Users, { through: 'UserGroups' });
 db.Users.belongsToMany(db.Groups, { through: 'UserGroups' });
 db.Menus.hasMany(db.Menus, { as: "Submenus", foreignKey: "parent_menu_id" });
 db.Menus.belongsTo(db.Menus, { as: "ParentMenu", foreignKey: "parent_menu_id" });
-   
+
+
+db.Categories = require('./pos/category')(sequelize, Sequelize.DataTypes);
+db.Products = require('./pos/product')(sequelize, Sequelize.DataTypes);
+
+db.Categories.hasMany(db.Categories, { as: "Subcategories", foreignKey: "parent_categoryID" });
+db.Categories.belongsTo(db.Categories, { as: "ParentCategory", foreignKey: "parent_categoryID" });
+
+db.Categories.hasMany(db.Products, { foreignKey: 'categoryID' });
+db.Products.belongsTo(db.Categories, { foreignKey: 'categoryID' });
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

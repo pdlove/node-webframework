@@ -1,20 +1,18 @@
 class uiMenuItem {
     inMenu = null;
     menuID = 0;
-    parentID=0;
+    parent_menu_id=0;
 
     parent=null;
     children = [];
     
     iconClass = null;
     iconText = null;
-    displayText = "";
-    displayType = "";
+    name = "";
 
-    navControl = null;
-    navControlParameters = "";
-    navPopupLink = null;
-    navJSCode = null;
+    panel = null;
+    panel_parameters = "";
+    external_link = null;
 
     domLI = null;
     domLink = null;
@@ -23,20 +21,19 @@ class uiMenuItem {
     constructor(inData) {
         if (inData) {
             this.menuID=inData.menuID;
-            this.parentID = (inData.parentID||0);
+            this.parent_menu_id = (inData.parent_menu_id||0);
             this.iconClass = (inData.iconClass||'');
             this.iconText = (inData.iconText||'');
-            this.displayText = inData.displayText;
-            this.navControl = (inData.navControl||null);
-            this.navControlParameters = (inData.navControlParameters||null);
-            this.navPopupLink = (inData.navPopupLink||null);
-            this.navJSCode = (inData.navJSCode||null);
+            this.name = inData.name;
+            this.panel = (inData.panel||null);
+            this.panel_parameters = (inData.panel_parameters||null);
+            this.external_link = (inData.external_link||null);
             this.isSelected = (inData.isSelected||false);
-			if (this.iconClass===''&&this.iconText==='') this.iconText=this.displayText[0];
+			if (this.iconClass===''&&this.iconText==='') this.iconText=this.name[0];
             if (!this.menuID) {
                 throw new Error("Menu Item ID is required but missing.");
             }
-            if (!this.displayText) {
+            if (!this.name) {
                 throw new Error("Display Text is required but missing.");
             }
         }
@@ -62,7 +59,7 @@ class uiMenuItem {
             });            
 		} else {
             itemIcon = document.createElement("span");
-            itemIcon.classList.add("sidebar-mini-icon");
+            itemIcon.classList.add("text-icon");
             itemIcon.innerHTML=this.iconText;
 		}
 		this.domLink.appendChild(itemIcon);
@@ -70,28 +67,14 @@ class uiMenuItem {
         let itemText = null;
         if (this.parent) { //This is for a child element
             itemText = document.createElement("span");
-            itemText.classList.add("sidebar-normal");
+            itemText.classList.add("normal");
         } else { //This is for the root elements
             itemText = document.createElement("p");
         }
-        itemText.innerHTML=this.displayText;
+        itemText.innerHTML=this.name;
         this.domLink.appendChild(itemText);
 
         if (this.children.length>0) {
-            //Add the caret to indicate expanded/collapsed
-            let itemCaret = document.createElement("b");
-            itemCaret.classList.add("caret");
-            itemText.appendChild(itemCaret);
-
-            //Create the submenu
-            this.domSubMenu = document.createElement("ul");
-            this.domSubMenu.classList.add("nav");
-            this.domSubMenu.classList.add("subnav");
-            for (var idx in this.children)
-				this.domSubMenu.appendChild(this.children[idx].renderItem());
-            this.domLI.appendChild(this.domSubMenu);
-
-
             //Configure the link to have the class for collapsing
             this.domLink.classList.add("collapsable");
             if (!this.isSelected) this.domLink.classList.add("collapsed");            
@@ -99,7 +82,21 @@ class uiMenuItem {
             //Configure the click Action to collapse/expand
             this.domLink.addEventListener("click", function(e) {
                 e.currentTarget.classList.toggle("collapsed");                
-              }.bind(this));
+            }.bind(this));
+            
+            //Add the caret to indicate expanded/collapsed
+            let itemCaret = document.createElement("b");
+            itemCaret.classList.add("caret");
+            itemText.appendChild(itemCaret);
+
+            //Create the submenu
+            this.domSubMenu = document.createElement("ul");
+            this.domSubMenu.classList.add("sub");
+            for (var idx in this.children)
+				this.domSubMenu.appendChild(this.children[idx].renderItem());
+            this.domLI.appendChild(this.domSubMenu);
+
+
         } else {
             this.domLink.addEventListener("click", function(e) {
                 this.inMenu.setSelectedItem(this.menuID);
@@ -123,6 +120,6 @@ class uiMenuItem {
         return myHTML
     }
     executeMenu() {
-        console.log("Ran menu item "+this.displayText);
+        console.log("Ran menu item "+this.name);
     }
 }
