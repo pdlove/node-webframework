@@ -1,6 +1,6 @@
 {
     "name": "uiMenu",
-    "controls": null,
+    "requiredControls": null,
     "css": ["uiMenu.css"],
     "html": null,
     "js": ["uiMenu.js","uiMenuItem.js"],

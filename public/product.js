@@ -1,3 +1,6 @@
+
+
+
 document.addEventListener('DOMContentLoaded', async function() {
     const productTableBody = document.querySelector('#productTable tbody');
     const productModal = document.getElementById('productModal');
@@ -13,35 +16,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     };
 
-    async function fetchCategoriesAndProducts() {
-        try {
-            const [categoriesResponse, productsResponse] = await Promise.all([
-                fetch('/api/ui/categories'),
-                fetch('/api/pos/products')
-            ]);
-            const categories = await categoriesResponse.json();
-            const products = await productsResponse.json();
-
-            const categoryTree = buildCategoryTree(categories);
-            renderCategoryTree(productTableBody, categoryTree, products);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    function buildCategoryTree(categories, parentCategoryID = null) {
-        const categoryTree = [];
-        categories.forEach(category => {
-            if (category.parent_categoryID === parentCategoryID) {
-                const children = buildCategoryTree(categories, category.categoryID);
-                if (children.length) {
-                    category.children = children;
-                }
-                categoryTree.push(category);
-            }
-        });
-        return categoryTree;
-    }
+    
 
     function renderCategoryTree(tbody, categoryTree, products, level = 0) {
         categoryTree.forEach(category => {
@@ -157,5 +132,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
-    fetchCategoriesAndProducts();
+    let myPage = new Page_Products();
+    myPage.setParameters();
+    myPage.renderDOM(document.getElementById("productTable"));
 });

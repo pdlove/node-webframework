@@ -29,10 +29,11 @@ function loadClientCodeList(dir, minify, startPath) {
         myList[test] = childList[test];
       }
     } else if (file === 'definition.json') {
-      let defName = path.relative(startPath, dir).replace(/\\/g, '/');
       let defContents = fs.readFileSync(fullPath, 'utf8');
       let defFile = JSON.parse(defContents);
-      let definition = { name: defName, cssCode: null, htmlCode: null, jsCode: null, startFunction: null };
+      let defName = path.relative(startPath, dir).replace(/\\/g, '/');
+      if (defFile.name) defName=defFile.name;
+      let definition = { name: defName, cssCode: null, htmlCode: null, jsCode: null, requiredControls: defFile.requiredControls };
       if (defFile.css) {
         let cssCode = '';
         for (let idx in defFile.css) {
@@ -76,45 +77,38 @@ function loadClientCodeList(dir, minify, startPath) {
   return myList;
 }
 
-var listControls = loadClientCodeList(path.join(appDir, 'client_controls'), false);
-//var listComponents = loadClientCodeList(path.join(appDir, 'client_components'), false);
-var listPages = loadClientCodeList(path.join(appDir, 'client_pages'), false);
-
+var listControls = loadClientCodeList(path.join(appDir, 'client_objects'), false);
 
 // Get a MenuItem by ID
 router.get('/control/:id', async (req, res) => {
   try {
-    const thisOne = listControls[req.params.id]
-    if (thisOne) {
+    let thisOne = null;
+    if (req.params.id.endsWith('.min.js')) {
+      const controlName = req.params.id.substring(0,req.params.id.length-7)
+      thisOne = listControls[controlName]
+      res.type("application/javascript");
+      res.send(thisOne.jsCodeMinified);
+    } else if (req.params.id.endsWith('.js')) {
+      const controlName = req.params.id.substring(0,req.params.id.length-3)
+      thisOne = listControls[controlName]
+      res.type("application/javascript");
+      res.send(thisOne.jsCode);
+    } else if (req.params.id.endsWith('.min.css')) {
+      const controlName = req.params.id.substring(0,req.params.id.length-8)
+      thisOne = listControls[controlName]
+      res.type("text/css");
+      res.send(thisOne.cssCodeMinified);
+    } else if (req.params.id.endsWith('.css')) {
+      const controlName = req.params.id.substring(0,req.params.id.length-4)
+      thisOne = listControls[controlName]
+      res.type("text/css");
+      res.send(thisOne.cssCode);
+    } else {
+      const controlName = req.params.id
+      thisOne = listControls[controlName]      
       res.status(200).json(thisOne);
-    } else {
-      res.status(404).json({ error: 'Control not found' });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-router.get('/control/:id/:fname', async (req, res) => {
-  try {
-    const thisOne = listControls[req.params.id]
-    if (thisOne) {
-      if (req.params.fname.endsWith('.min.js')) {
-        res.type("application/javascript");
-        res.send(thisOne.jsCodeMinified);
-      } else if (req.params.fname.endsWith('.js')) {
-        res.type("application/javascript");
-        res.send(thisOne.jsCode);
-      } else if (req.params.fname.endsWith('.min.css')) {
-        res.type("text/css");
-        res.send(thisOne.cssCodeMinified);
-      } else if (req.params.fname.endsWith('.css')) {
-        res.type("text/css");
-        res.send(thisOne.cssCode);
-      } else {
-        res.status(400).json({ error: "Unknown Extension" });    
-      }
-    } else {
+    if (!thisOne) {
       res.status(404).json({ error: 'Control not found' });
     }
   } catch (error) {
