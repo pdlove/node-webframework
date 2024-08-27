@@ -5,7 +5,7 @@ class uiTable {
     addUndefinedColumns = true;
     
     //Data
-    tableRows=[];
+    tableRows={};
     allColumns={};
     displayColumns=[];
     indexField="";
@@ -39,8 +39,13 @@ class uiTable {
         this.allColumns[options.name] = new uiTableColumn(options);     
     }
     setData(options) {
+        //options = {dataArray: [], idxField: ''} //idxField is optional. A self-increasing numerical index will be used
+        //options = {rowDictionary: {}, idxField: ''} //idxField is optional
+        if (Array.isArray(options)) options={ dataArray: options }
+        
         this.tableRows=options;
     }
+    
     addUpdateData(newData) {
         //This will add or update data
     }
