@@ -1,6 +1,11 @@
 class uiTableColumn {
     isIndex;
     isVisible;
+    
+    canHide;
+    canView;
+    canGroup;
+
     name;
     order;
     
