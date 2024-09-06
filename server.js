@@ -1,9 +1,8 @@
-
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
-const db = require('./models');
+const db = require('./stacks/system/models');
 
 const app = express();
 const port = 3002;
@@ -83,3 +82,14 @@ async function runJob() {
   var jobsToRun = db.Job.findAll({where: { status: "pending"}});
 
 }
+
+async function test() {
+    var snmpNetworking = require('./snmp/snmp_networking').SNMP_NetDevice;
+  let test = new snmpNetworking("192.168.5.3","BW15NMp");
+  await test.UpdateDetails();
+  await test.UpdatePortLearnedMACs();
+  test=test;
+}
+test();
+
+var snmp = require('./original');

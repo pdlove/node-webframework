@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "asn1-ber": "^1.2.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "clean-css": "^5.3.3",
@@ -12,5 +13,10 @@
     "sqlite3": "^5.1.7",
     "uglify-js": "^3.19.2",
     "undici-types": "^6.19.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0"
   }
 }
