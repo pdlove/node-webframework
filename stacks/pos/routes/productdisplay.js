@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../models');
+const db = require('../../system/models');
 
 router.get('/:tabletype/:filter', async (req, res) => {
     let products = null;

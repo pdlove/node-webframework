@@ -19,7 +19,7 @@ db.Menus.belongsTo(db.Menus, { as: "ParentMenu", foreignKey: "parent_menu_id" })
 
 
 
-db.Products = require('./pos/product')(sequelize, Sequelize.DataTypes);
+db.Products = require('../../pos/models/product')(sequelize, Sequelize.DataTypes);
 
 db.Categories.hasMany(db.Categories, { as: "Subcategories", foreignKey: "parent_categoryID" });
 db.Categories.belongsTo(db.Categories, { as: "ParentCategory", foreignKey: "parent_categoryID" });

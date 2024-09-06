@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../models');
+const db = require('../../../system/models');
 
 // Create a device
 router.post('/', async (req, res) => {
