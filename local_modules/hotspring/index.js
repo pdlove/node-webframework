@@ -1,4 +1,4 @@
 const { hotspringGlobal } = require('./hotspringGlobal');
 const { hotspringStack } = require('./hotspringStack');
-
-module.exports = { hotspringGlobal, hotspringStack }
+const { hotspringData } = require('./hotspringData');
+module.exports = { hotspringGlobal, hotspringStack, hotspringData }

@@ -1,8 +1,9 @@
-const { hotspringGlobal }  = require('hotspring');
-const path = require('path');
+const { hotspringGlobal, hotspringStack }  = require('hotspring');
+
+async function runTest() {
+    let newStack = await hotspringStack.loadFromPath('snmp');
+    newStack=newStack;
+}
 
 
-hotspringGlobal.loadStack(path.resolve(__dirname,'stacks',''))
-
-
-console.log(require.paths);
+runTest();
