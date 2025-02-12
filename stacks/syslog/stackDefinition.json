@@ -1,5 +1,0 @@
-{
-    "name": "syslog",
-    "description": "Everything associated with Syslog Collection and parsing.",
-    "configuration": {}
-  }

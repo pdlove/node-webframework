@@ -1,7 +1,0 @@
-{
- "dbconfig": {
-    "storage": "newdb.sqlite",
-    "dialect": "sqlite",
-    "logging": true
-  }
-}

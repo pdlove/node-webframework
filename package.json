@@ -1,34 +1,5 @@
 {
   "dependencies": {
-    "asn1-ber": "^1.2.2",
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
-    "clean-css": "^5.3.3",
-    "dgram": "^1.0.1",
-    "express": "^4.19.2",
-    "fs": "^0.0.1-security",
-    "hotspring-framework": "file:../hotspring-framework",
-    "html-minifier": "^4.0.0",
-    "ipaddr.js": "^2.2.0",
-    "jsonwebtoken": "^9.0.2",
-    "mime-types": "^2.1.35",
-    "mssql": "^11.0.1",
-    "net": "^1.0.2",
-    "path": "^0.12.7",
-    "pg": "^8.13.1",
-    "pg-format": "^1.0.4",
-    "pg-hstore": "^2.3.4",
-    "ping": "^0.4.4",
-    "seq": "^0.3.5",
-    "sequelize": "^6.37.5",
-    "sqlite3": "^5.1.7",
-    "tls": "^0.0.1",
-    "uglify-js": "^3.19.2",
-    "undici-types": "^6.19.8"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.9.1",
-    "eslint": "^9.9.1",
-    "globals": "^15.9.0"
+    "sqlite3": "^5.1.7"
   }
 }

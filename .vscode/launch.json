@@ -1,0 +1,57 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Syslog Test",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\node-webframework\\syslog\\test.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch SNMP Test",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\node-webframework\\snmp\\test.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Netscan",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\node-webframework\\snmp\\netscan.js"
+        },        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch SNMP Walk",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\node-webframework\\snmp\\walk.js"
+        },        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch MEAD Server",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\node-webframework\\server.js",
+            "env": {
+                "DEBUG": "express:*"
+            }
+        }
+
+    ]
+}
