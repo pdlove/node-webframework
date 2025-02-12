@@ -1,8 +1,0 @@
-{
-    "name": "devices",
-    "controls": ["uiTable"],
-    "css": null,
-    "html": ["devices.html"],
-    "js": ["devices.js"],
-    "startup": ["init_devices"]
-}

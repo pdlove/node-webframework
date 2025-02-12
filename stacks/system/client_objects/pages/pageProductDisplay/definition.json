@@ -1,9 +1,0 @@
-{
-    "name": "pageProductDisplay",
-    "description": "GUI to display the product on a table grouped by category",
-    "css": ["pageProductDisplay.css"],
-    "html": ["pageProductDisplay.html"],
-    "js": ["pageProductDisplay.js"],
-    "requiredControls": ["uiTable"],
-    "isClass": true
-}
